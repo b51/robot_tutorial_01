@@ -65,6 +65,8 @@ int main(int argc, char* argv[]) {
   R_rc <<  0.0042244, 0.00280237, 0.999987,
            0.999979, 0.0048524, -0.004238,
            -0.004864, 0.99998, -0.0027818;
+  
+  t_rc << 0.05, 0.10, 0.20;
 
   // ball center position in robot coordinate
   /* float center_x = ?; */
