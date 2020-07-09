@@ -19,10 +19,44 @@ ImageProcess::~ImageProcess() {}
 
 // & symbol use variable as reference
 void ImageProcess::DetectBall(const cv::Mat& image, BCircle& bcircle) {
-  // get ball center pixel position and ball radius
-  /* bcircle.x = ?; */
-  /* bcircle.y = ?; */
-  /* bcircle.radius = ?; */
+  // convert image from bgr to hsv
+  cv::Mat hsv_image;
+  cv::cvtColor(image, hsv_image, cv::COLOR_BGR2HSV);
+  cv::Scalar green_lower(29, 86, 6);
+  cv::Scalar green_upper(64, 255, 255);
+
+  // generate mask with green threshold
+  cv::Mat mask;
+  cv::inRange(hsv_image, green_lower, green_upper, mask);
+  mask = 255. - mask;
+  /* cv::imshow("mask", mask); */
+  /* cv::waitKey(0); */
+
+  // detected contours in image
+  std::vector<std::vector<cv::Point>> contours;
+  std::vector<cv::Vec4i> hierarchy;
+
+  // threshold contours
+  cv::findContours(mask.clone(), contours, hierarchy, cv::RETR_EXTERNAL,
+                   cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+  // find max area in all contours
+  int max_area_id = -1;
+  int max_area = 0;
+  for (int i = 0; i < contours.size(); i++) {
+    double area = cv::contourArea(contours.at(i));
+    if (area > max_area) {
+      max_area = area;
+      max_area_id = i;
+    }
+  }
+
+  cv::Point2f center;
+  float radius;
+  cv::minEnclosingCircle(contours[max_area_id], center, radius);
+  bcircle.x = center.x;
+  bcircle.y = center.y;
+  bcircle.radius = radius;
 }
 
 void ImageProcess::DrawBCircle(const cv::Mat& image, const BCircle& bcircle) {
