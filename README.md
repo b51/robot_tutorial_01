@@ -1,4 +1,4 @@
-## Task 01
+## Tutorial 01
 ### What this repository for
 * 熟悉物体检测
 * 熟悉摄像机内参
@@ -20,3 +20,11 @@ $ ./detect_ball ../data/ball_image.jpg
 * 补充 ImageProcess.cc 内的 DetectBall 完成对图片中球的检测
 * 使用提供的 K 计算出球心在相机坐标系中的坐标
 * 使用提供的相机与机器人之间的外参计算出球心在机器人坐标系中的坐标
+
+### Solution
+* 参考解决方案可参照 solution 分支
+
+```bash
+$ git pull origin
+$ git checkout solution
+```
